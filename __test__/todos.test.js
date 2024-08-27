@@ -9,8 +9,8 @@ beforeAll(async () => {
   try {
     // create user & get token
     const user = await User.create({
-      email: "test@mail.com",
-      password: "rahasia",
+      email: "testtodo@mail.com",
+      password: "rahasiajuga",
     });
 
     token = user.generateToken();
@@ -30,7 +30,7 @@ afterAll(async () => {
   await sequelize.close();
 });
 
-describe("Todos resource", () => {
+describe("EndPoint /todos", () => {
   it("Should not be able to get all todos when token is not provided", async () => {
     const response = await request(app)
       .get("/todos")
@@ -50,7 +50,7 @@ describe("Todos resource", () => {
     expect(Array.isArray(response.body)).toBeTruthy();
   });
 
-  it("Should be able to get single todo", async () => {
+  it("Should be able to get single todo by id", async () => {
     const response = await request(app)
       .get(`/todos/${todos[0].id}`)
       .set("Content-Type", "application/json")
@@ -63,59 +63,4 @@ describe("Todos resource", () => {
     expect(response.body.createdAt).toBeDefined();
     expect(response.body.updatedAt).toBeDefined();
   });
-
-  // it("Should not be able to get single todo when id is invalid", async () => {
-  //   const response = await request(app)
-  //     .get(`/todos/5656`)
-  //     .set("Content-Type", "application/json")
-  //     .auth(token, { type: "bearer" });
-
-  //   expect(response.statusCode).toBe(404);
-  //   expect(response.body).toEqual({
-  //     error: "NotfoundError",
-  //     message: "Todo is not found",
-  //   });
-  // });
-
-  // it("Should be able to create new task", async () => {
-  //   const response = await request(app)
-  //     .post("/todos")
-  //     .set("Content-Type", "application/json")
-  //     .auth(token, { type: "bearer" })
-  //     .send({ task: "Test task" });
-
-  //   expect(response.statusCode).toBe(200);
-  //   expect(response.body.id).toBeDefined();
-  //   expect(response.body.task).toBe("Test task");
-  //   expect(response.body.UserId).toBeDefined();
-  //   expect(response.body.createdAt).toBeDefined();
-  //   expect(response.body.updatedAt).toBeDefined();
-  // });
-
-  // it("Should be able to update task", async () => {
-  //   const response = await request(app)
-  //     .put(`/todos/${todos[0].id}`)
-  //     .set("Content-Type", "application/json")
-  //     .auth(token, { type: "bearer" })
-  //     .send({ task: "Test task edit" });
-
-  //   expect(response.statusCode).toBe(200);
-  //   expect(response.body.id).toBeDefined();
-  //   expect(response.body.task).toBe("Test task edit");
-  //   expect(response.body.UserId).toBeDefined();
-  //   expect(response.body.createdAt).toBeDefined();
-  //   expect(response.body.updatedAt).toBeDefined();
-  // });
-
-  // it("Should be able to delete task", async () => {
-  //   const response = await request(app)
-  //     .delete(`/todos/${todos[0].id}`)
-  //     .set("Content-Type", "application/json")
-  //     .auth(token, { type: "bearer" });
-
-  //   expect(response.statusCode).toBe(200);
-  //   expect(response.body).toEqual({
-  //     message: "Task has been deleted",
-  //   });
-  // });
 });
